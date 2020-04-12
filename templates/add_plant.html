@@ -1,0 +1,17 @@
+<html>
+    <head>
+      <title>Plant App</title>
+
+    <h2>Add a New Plant Friend</h2>
+
+    <body>
+  <form action="{{ url_for('plants.add_plant') }}" method="post" enctype="multipart/form-data">
+      {{ render_field(form.plant_name, placeholder="Enter Plant Name") }}
+      {{ render_field(form.plant_description, placeholder="Describe Your Plant") }}
+      {{ render_field(form.watering_frequency, placeholder="How Often Does Your Plant Need Water?")}}
+      {{ render_field(form.created_at, placeholder="Created Date")}}
+      {{ render_field(form.plant_photo) }}
+    <button class="btn btn-sm btn-success" type="submit">Add Recipe</button>
+  </form>
+</body>
+</html>
