@@ -1,17 +1,35 @@
-<html>
-    <head>
-      <title>Plant App</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Plant App</title>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
-    <h2>Add a New Plant Friend</h2>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Plant App</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="#">home</a></li>
+      <li><a href="new">new</a></li>
+      <li><a href="plants">plants</a></li>
+    </ul>
+  </div>
+</nav>
 
-    <body>
-  <form action="{{ url_for('plants.add_plant') }}" method="post" enctype="multipart/form-data">
-      {{ render_field(form.plant_name, placeholder="Enter Plant Name") }}
-      {{ render_field(form.plant_description, placeholder="Describe Your Plant") }}
-      {{ render_field(form.watering_frequency, placeholder="How Often Does Your Plant Need Water?")}}
-      {{ render_field(form.created_at, placeholder="Created Date")}}
-      {{ render_field(form.plant_photo) }}
-    <button class="btn btn-sm btn-success" type="submit">Add Recipe</button>
-  </form>
+<body>
+  <div class="container">
+    <h2>Add A New Plant</h2>
+      <form action="{{ url_for('plants.add_plant') }}" method="post">
+          {{ form.csrf_token }}
+          {{ form.plant_name(placeholder="Plant Name") }}
+          {{ form.plant_description(placeholder="Plant Description") }}
+          {{ form.watering_frequency(placeholder="Watering Frequency") }}
+          <button class="btn btn-sm btn-success" type="submit">Add Plant</button>
+        </form>
+      </div>
 </body>
-</html>
