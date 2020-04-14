@@ -8,6 +8,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
+
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -21,11 +22,32 @@
   </div>
 </nav>
 
-  <body>
+</head>
+
+
+<body>
 
 <div class="container">
-  <h1>Plant App for Plant Lovers & CareTakers</h1>
-  <h2> Welcome!</h2>
+
+    <h2> Here Are Your Plants </h2>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Plant Name</th>
+        <th>Plant Description</th>
+        <th>Watering Frequency</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for plant in plants %}
+      <tr>
+        <td>{{ plant.plant_name }}</td>
+        <td>{{ plant.plant_description }}</td>
+        <td>every {{ plant.watering_frequency }} days</td>
+      </tr>
+    {% endfor %}
+    </tbody
+  </table>
 </div>
-  </body>
-</html>
+</body>

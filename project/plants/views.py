@@ -1,16 +1,22 @@
 from flask import render_template, Blueprint, request, redirect, url_for, flash, abort, jsonify
+from project.models import Plants
 
 #from .forms import AddPlantForm
 
 ###CONFIG###
 plants_blueprint = Blueprint('plants', __name__, template_folder='templates')
 
-#plants_blueprint = Blueprint('plants', __name__, template_folder='templates')
+
+##ROUTES##
 
 @plants_blueprint.route('/')
 def hello():
     return render_template('hello.html')
 
+@plants_blueprint.route('/plants')
+def all():
+    all_plants = Plants.query.all()
+    return render_template('plants.html', plants=all_plants)
 # @plants_blueprint.route('/new', methods=['GET', 'POST'])
 # def add_plant():
 #     # Cannot pass in 'request.form' to AddRecipeForm constructor, as this will cause 'request.files' to not be
