@@ -1,35 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Plant App</title>
-  <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+{% extends "hello.html" %}
+{% block content %}
 
-<nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">Plant App</a>
-    </div>
-    <ul class="nav navbar-nav">
-      <li class="active"><a href="#">home</a></li>
-      <li><a href="new">new</a></li>
-      <li><a href="plants">plants</a></li>
-    </ul>
-  </div>
-</nav>
+<div class="container">
+<h2>Add A New Plant</h2>
 
-<body>
-  <div class="container">
-    <h2>Add A New Plant</h2>
       <form action="{{ url_for('plants.add_plant') }}" method="post">
           {{ form.csrf_token }}
+
           {{ form.plant_name(placeholder="Plant Name") }}
+          <span class = "error">
+            {% if form.plant_name.errors %}
+              {% for error in form.plant_name.errors %}
+                {{ error }}
+              {% endfor %}
+            {% endif %}
+          </span>
+
           {{ form.plant_description(placeholder="Plant Description") }}
+          <span class = "error">
+            {% if form.plant_description.errors %}
+              {% for error in form.plant_description.errors %}
+                {{ error }}
+              {% endfor %}
+            {% endif %}
+          </span>
+
           {{ form.watering_frequency(placeholder="Watering Frequency") }}
+          <span class = "error">
+            {% if form.watering_frequency.errors %}
+              {% for error in form.watering_frequency.errors %}
+                {{ error }}
+              {% endfor %}
+            {% endif %}
+          </span>
+
           <button class="btn btn-sm btn-success" type="submit">Add Plant</button>
-        </form>
-      </div>
-</body>
+      </form>
+    </div>
+
+{% endblock %}

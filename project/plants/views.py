@@ -5,6 +5,15 @@ from project import db
 ###CONFIG###
 plants_blueprint = Blueprint('plants', __name__, template_folder='templates')
 
+##FUNCTION##
+def flash_errors(form):
+    for field, errors in form.errors.items():
+        for error in errors:
+            flash(u"Error in the %s field - %s" % (
+                getattr(form, field).label.text,
+                error
+            ), 'info')
+
 
 ##ROUTES##
 
@@ -32,8 +41,9 @@ def add_plant():
             )
             db.session.add(new_plant)
             db.session.commit()
+            flash('Yay! {} joined the crew'.format(new_plant.plant_name.title()), 'success')
             return redirect(url_for('plants.all'))
-        # else:
-        #     flash_errors(form)
-        #     flash('ERROR! Plant could not be added.', 'error')
+        else:
+            flash_errors(form)
+            flash('Error: Plant could not be added.', 'error')
     return render_template('add_plant.html', form=form)

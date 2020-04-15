@@ -1,32 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Plant App</title>
-  <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+{% extends 'layout.html' %}
 
-
-<nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">Plant App</a>
-    </div>
-    <ul class="nav navbar-nav">
-      <li class="active"><a href="#">home</a></li>
-      <li><a href="new">new</a></li>
-      <li><a href="plants">plants</a></li>
-    </ul>
-  </div>
-</nav>
-
-</head>
-
-
-<body>
-
+{%block content%}
 <div class="container">
 
     <h2> Here Are Your Plants </h2>
@@ -42,8 +16,8 @@
     <tbody>
       {% for plant in plants %}
       <tr>
-        <td>{{ plant.plant_name }}</td>
-        <td>{{ plant.plant_description }}</td>
+        <td>{{ plant.plant_name.title() }}</td>
+        <td>{{ plant.plant_description.lower() }}</td>
         <td>every {{ plant.watering_frequency }} days</td>
       </tr>
     {% endfor %}
@@ -51,3 +25,5 @@
   </table>
 </div>
 </body>
+
+{% endblock %}
