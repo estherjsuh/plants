@@ -3,4 +3,4 @@ venv/
 instance/
 __pycache__/
 misc/
-project/plants/static/
+static/img
