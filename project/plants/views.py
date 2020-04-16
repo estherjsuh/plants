@@ -51,4 +51,4 @@ def add_plant():
 @plants_blueprint.route('/gallery')
 def gallery():
     all_plants = Plants.query.all()
-    return render_template('gallery.html')
+    return render_template('gallery.html',plants=all_plants)
