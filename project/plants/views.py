@@ -1,7 +1,7 @@
 from flask import render_template, Blueprint, request, redirect, url_for, flash, abort, jsonify
 from project.models import Plants
 from .forms import AddPlantForm
-from project import db
+from project import db, images
 ###CONFIG###
 plants_blueprint = Blueprint('plants', __name__, template_folder='templates')
 
@@ -34,10 +34,9 @@ def add_plant():
     form = AddPlantForm()
     if request.method == 'POST':
         if form.validate_on_submit():
-            #filename = images.save(request.files['plant_photo'])
-            #url = images.url(filename)
-            new_plant = Plants(form.plant_name.data, form.plant_description.data, form.watering_frequency.data
-            #, filename, url,
+            filename = images.save(request.files['plant_photo'])
+            url = images.url(filename)
+            new_plant = Plants(form.plant_name.data, form.plant_description.data, form.watering_frequency.data, filename, url
             )
             db.session.add(new_plant)
             db.session.commit()
@@ -47,3 +46,9 @@ def add_plant():
             flash_errors(form)
             flash('Error: Plant could not be added.', 'error')
     return render_template('add_plant.html', form=form)
+
+
+@plants_blueprint.route('/gallery')
+def gallery():
+    all_plants = Plants.query.all()
+    return render_template('gallery.html')

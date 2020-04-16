@@ -4,10 +4,10 @@
 <div class="container">
 <h2>Add A New Plant</h2>
 
-      <form action="{{ url_for('plants.add_plant') }}" method="post">
+      <form action="{{ url_for('plants.add_plant') }}" method="post" enctype="multipart/form-data">
           {{ form.csrf_token }}
 
-          {{ form.plant_name(placeholder="Plant Name") }}
+          Name {{ form.plant_name(placeholder="Plant Name") }}
           <span class = "error">
             {% if form.plant_name.errors %}
               {% for error in form.plant_name.errors %}
@@ -15,8 +15,8 @@
               {% endfor %}
             {% endif %}
           </span>
-
-          {{ form.plant_description(placeholder="Plant Description") }}
+          <br>
+          Description {{ form.plant_description(placeholder="Plant Description") }}
           <span class = "error">
             {% if form.plant_description.errors %}
               {% for error in form.plant_description.errors %}
@@ -24,8 +24,8 @@
               {% endfor %}
             {% endif %}
           </span>
-
-          {{ form.watering_frequency(placeholder="Watering Frequency") }}
+          <br>
+          Frequency {{ form.watering_frequency(placeholder="Watering Frequency") }}
           <span class = "error">
             {% if form.watering_frequency.errors %}
               {% for error in form.watering_frequency.errors %}
@@ -33,7 +33,9 @@
               {% endfor %}
             {% endif %}
           </span>
-
+          <br>
+          {{form.plant_photo}}
+          <br>
           <button class="btn btn-sm btn-success" type="submit">Add Plant</button>
       </form>
     </div>

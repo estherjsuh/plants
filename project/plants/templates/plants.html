@@ -5,12 +5,13 @@
 
     <h2> Here Are Your Plants </h2>
 
-  <table class="table table-bordered">
+  <table class="table table-bordered" align=center>
     <thead>
       <tr>
         <th>Plant Name</th>
         <th>Plant Description</th>
         <th>Watering Frequency</th>
+        <th>Photo</th
       </tr>
     </thead>
     <tbody>
@@ -19,6 +20,7 @@
         <td>{{ plant.plant_name.title() }}</td>
         <td>{{ plant.plant_description.lower() }}</td>
         <td>every {{ plant.watering_frequency }} days</td>
+        <td><img src= " {{ plant.image_url }}"  height=150 width=150></td>
       </tr>
     {% endfor %}
     </tbody

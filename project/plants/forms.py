@@ -1,8 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import Form, StringField, IntegerField
 from wtforms.validators import DataRequired
-#from flask_wtf.file import FileField, FileAllowed, FileRequired
-#from app import images
+from flask_wtf.file import FileField, FileAllowed, FileRequired
+from project import images
 
 
 class AddPlantForm(FlaskForm):
@@ -10,4 +10,4 @@ class AddPlantForm(FlaskForm):
     plant_description = StringField('Plant Description', validators=[DataRequired()])
     watering_frequency = IntegerField('Watering Frequency', validators=[DataRequired()])
     #created_at = DateFrield('Created At', validators=[DataRequired()])
-    #plant_photo = FileField('Plant Image', validators=[FileRequired(), FileAllowed(images, 'Images only!')])
+    plant_photo = FileField('Plant Image', validators=[FileRequired(), FileAllowed(images, 'Images only!')])

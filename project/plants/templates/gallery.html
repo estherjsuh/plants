@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{%block content%}
+
+<ul id="container">
+    {% for plant in plants %}
+    <img class="item" src="{{ plant.image_url }}"/>
+    {% endfor %}
+
+
+{% endblock %}

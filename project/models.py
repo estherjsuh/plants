@@ -10,14 +10,14 @@ class Plants(db.Model):
     plant_description = db.Column(db.String, nullable=False)
     watering_frequency = db.Column(db.Integer, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
-    # image_filename = db.Column(db.String, default=None, nullable=True)
-    # image_url = db.Column(db.String, default=None, nullable=True)
+    image_filename = db.Column(db.String, default=None, nullable=True)
+    image_url = db.Column(db.String, default=None, nullable=True)
 
 
-    def __init__(self, name, description, frequency):
+    def __init__(self, name, description, frequency, image_filename=None, image_url=None):
         self.plant_name = name
         self.plant_description = description
         self.watering_frequency = frequency
         #self.created_at = created_at
-        # self.image_filename = image_filename
-        # self.image_url = image_url
+        self.image_filename = image_filename
+        self.image_url = image_url
