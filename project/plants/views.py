@@ -52,3 +52,18 @@ def add_plant():
 def gallery():
     all_plants = Plants.query.all()
     return render_template('gallery.html',plants=all_plants)
+
+@plants_blueprint.route('/edit/<int:id>', methods=['GET', 'POST'])
+def edit(id):
+    data = Plants.query.filter(Plants.plant_id == id)
+    plant = data.first()
+    if plant:
+        form = AddPlantForm(formdata=request.form, obj=plant)
+        if request.method == 'POST' and form.validate():
+            save_changes(plant, form)
+            flash('Plant updated successfully!')
+            return reditect(url_for('plants.all'))
+        return render_template('edit.html', form=form)
+    else:
+        flash_errors(form)
+        flash('Error: Plant could not update')

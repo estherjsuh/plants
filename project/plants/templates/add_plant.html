@@ -1,4 +1,6 @@
-{% extends "hello.html" %}
+{% extends "layout.html" %}
+{% from "_form_macros.html" import render_field %}
+
 {% block content %}
 
 <div class="container">
@@ -6,36 +8,16 @@
 
       <form action="{{ url_for('plants.add_plant') }}" method="post" enctype="multipart/form-data">
           {{ form.csrf_token }}
-
-          Name {{ form.plant_name(placeholder="Plant Name") }}
-          <span class = "error">
-            {% if form.plant_name.errors %}
-              {% for error in form.plant_name.errors %}
-                {{ error }}
-              {% endfor %}
-            {% endif %}
-          </span>
-          <br>
-          Description {{ form.plant_description(placeholder="Plant Description") }}
-          <span class = "error">
-            {% if form.plant_description.errors %}
-              {% for error in form.plant_description.errors %}
-                {{ error }}
-              {% endfor %}
-            {% endif %}
-          </span>
-          <br>
-          Frequency {{ form.watering_frequency(placeholder="Watering Frequency") }}
-          <span class = "error">
-            {% if form.watering_frequency.errors %}
-              {% for error in form.watering_frequency.errors %}
-                {{ error }}
-              {% endfor %}
-            {% endif %}
-          </span>
-          <br>
-          {{form.plant_photo}}
-          <br>
+      <dl>
+        {{ render_field(form.plant_name)}}
+        <br>
+        {{ render_field(form.plant_description)}}
+        <br>
+        {{ render_field(form.watering_frequency, placeholder = "every # days") }}
+        <br>
+        {{ render_field(form.plant_photo)}}
+        <br>
+      </dl>
           <button class="btn btn-sm btn-success" type="submit">Add Plant</button>
       </form>
     </div>
