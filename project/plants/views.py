@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Blueprint, request, redirect, url_for, flash
+from flask import render_template, Blueprint, request, redirect, url_for, flash
 from project.models import Plants
 from .forms import AddPlantForm, EditPlantForm
 from project import db, app
@@ -51,7 +51,6 @@ def add_plant():
                 flash('No plant photo selected ')
                 return redirect(request.url)
 
-
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
@@ -103,3 +102,14 @@ def edit(id):
             flash_errors(form)
             flash('Could not udpate {}'.format(plant.plant_name), 'error')
     return render_template('edit.html', form=form, plant=plant)
+
+@plants_blueprint.route('/delete/<int:id>', methods=['POST'])
+def delete(id):
+    plant = Plants.query.filter_by(plant_id=id).first_or_404()
+    if request.method=='POST':
+        db.session.delete(plant)
+        db.session.commit()
+        flash('{}} Delete'.format(plant.plant_name), 'success')
+        return redirect(url_for('plants.all'))
+    else:
+        flask('Could not delete {}'.format(plant.plant_name), 'error')

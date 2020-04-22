@@ -5,14 +5,15 @@
 
     <h2> Here Are Your Plants </h2>
 
-  <table class="table table-bordered">
+  <table class="table table-borderless">
     <thead>
       <tr>
         <th>Plant Name</th>
         <th>Plant Description</th>
         <th>Watering Frequency</th>
         <th>Photo</th>
-        <th>Edit/Delete</th>
+        <th></th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -23,6 +24,11 @@
         <td>every {{ plant.watering_frequency }} days</td>
         <td><img src= "{{ plant.image_url }}"  height=150 width=150></td>
         <td><a href="edit/{{plant.plant_id}}" class="btn btn-default pull-left">Edit</a> </td>
+        <td>
+          <form action="{{url_for('plants.delete', id=plant.plant_id)}}" method="post">
+            <input type="submit" value="Delete" class="btn btn-danger">
+          </form>
+        </td>
       </tr>
     {% endfor %}
     </tbody

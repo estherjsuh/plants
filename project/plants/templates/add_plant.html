@@ -6,11 +6,10 @@
 <div class="container">
 <h2>Add A New Plant</h2>
 
-      <form action="{{ url_for('plants.add_plant') }}" method="post" enctype="multipart/form-data">
-          {{ form.csrf_token }}
+  <form action="{{ url_for('plants.add_plant') }}" method="post" enctype="multipart/form-data">
+    {{ form.csrf_token }}
   <label for="plant_name"> Plant Name: </label>
   <br>
-
     <input type="text" id="plant_name" name="plant_name">
       {{ render_errors(form.plant_name) }}
   <br>
