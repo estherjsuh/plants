@@ -13,3 +13,47 @@
   </dd>
 
 {% endmacro %}
+
+{% macro render_errors(field) %}
+  {% if field.errors %}
+    <span class="error">
+    {% for error in field.errors %}
+      {{ error }}
+    {% endfor %}
+    </span>
+  {% endif %}
+{% endmacro %}
+
+
+{% macro render_plant_edit_form(form, plant) %}
+
+
+
+    <label for="plant_name"> Plant Name: </label>
+    <br>
+      <input type="text" id="plant_name" name="plant_name" value="{{ plant.plant_name }}">
+        {{ render_errors(form.plant_name) }}
+    <br>
+    <br>
+
+    <label for="plant_description"> Plant Description: </label>
+      <br>
+      <input type="text" id="plant_description" name="plant_description" value="{{ plant.plant_description }}">
+        {{ render_errors(form.plant_description) }}
+    <br>
+    <br>
+    <label for="watering_frequency"> Watering Frequency: </label>
+      <br>
+      <input type="text" id="watering_frequency" name="watering_frequency" value="{{ plant.watering_frequency }}">
+        {{ render_errors(form.watering_frequency) }}
+    <br>
+    <br>
+    <label for="plant_photo"> Plant Photo: </label>
+    <br>
+      <label class="form-check-label">Current filename: {{ plant.image_filename }}</label>
+      <input type="file" name="plant_photo" id="plant_photo" aria-describedby="fileHelp">
+                <small id="fileHelp" class="form-text text-muted">Select an image for this plant.</small>
+                {{ render_errors(form.plant_photo) }}
+    <br>
+
+{% endmacro %}

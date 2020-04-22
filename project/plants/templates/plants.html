@@ -21,7 +21,7 @@
         <td>{{ plant.plant_name.title() }}</td>
         <td>{{ plant.plant_description.lower() }}</td>
         <td>every {{ plant.watering_frequency }} days</td>
-        <td><img src= " {{ plant.image_url }}"  height=150 width=150></td>
+        <td><img src= "{{ plant.image_url }}"  height=150 width=150></td>
         <td><a href="edit/{{plant.plant_id}}" class="btn btn-default pull-left">Edit</a> </td>
       </tr>
     {% endfor %}

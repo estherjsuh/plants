@@ -1,42 +1,17 @@
 {% extends 'layout.html' %}
+{% from "_form_macros.html" import render_errors, render_plant_edit_form %}
 
-
-{%block content%}
+{% block content %}
 
 <div class="container">
-  <form action="" method="post" enctype="multipart/form-data">
-      {{ form.csrf_token }}
+  <h2> Edit Plant</h2>
 
-      Name {{ form.plant_name(placeholder="Plant Name") }}
-      <span class = "error">
-        {% if form.plant_name.errors %}
-          {% for error in form.plant_name.errors %}
-            {{ error }}
-          {% endfor %}
-        {% endif %}
-      </span>
-      <br>
-      Description {{ form.plant_description(placeholder="Plant Description") }}
-      <span class = "error">
-        {% if form.plant_description.errors %}
-          {% for error in form.plant_description.errors %}
-            {{ error }}
-          {% endfor %}
-        {% endif %}
-      </span>
-      <br>
-      Frequency {{ form.watering_frequency(placeholder="Watering Frequency") }}
-      <span class = "error">
-        {% if form.watering_frequency.errors %}
-          {% for error in form.watering_frequency.errors %}
-            {{ error }}
-          {% endfor %}
-        {% endif %}
-      </span>
-      <br>
-      {{form.plant_photo}}
-      <br>
-      <button class="btn btn-sm btn-success" type="submit">Add Plant</button>
-  </form>
+        <form action= {{url_for('plants.edit', id=plant.plant_id)}} method="post" enctype="multipart/form-data">
+            {{ form.csrf_token }}
+            {{ render_plant_edit_form(form, plant) }}
+
+      <button class="btn-sm btn-success" type="submit">Edit Plant</button>
+    </form>
+</div>
 
 {% endblock %}

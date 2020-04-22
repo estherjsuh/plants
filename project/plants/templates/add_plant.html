@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% from "_form_macros.html" import render_field %}
+{% from "_form_macros.html" import render_errors %}
 
 {% block content %}
 
@@ -8,18 +8,34 @@
 
       <form action="{{ url_for('plants.add_plant') }}" method="post" enctype="multipart/form-data">
           {{ form.csrf_token }}
-      <dl>
-        {{ render_field(form.plant_name)}}
-        <br>
-        {{ render_field(form.plant_description)}}
-        <br>
-        {{ render_field(form.watering_frequency, placeholder = "every # days") }}
-        <br>
-        {{ render_field(form.plant_photo)}}
-        <br>
-      </dl>
-          <button class="btn btn-sm btn-success" type="submit">Add Plant</button>
-      </form>
-    </div>
+  <label for="plant_name"> Plant Name: </label>
+  <br>
+
+    <input type="text" id="plant_name" name="plant_name">
+      {{ render_errors(form.plant_name) }}
+  <br>
+  <br>
+
+  <label for="plant_description"> Plant Description: </label>
+    <br>
+    <input type="text" id="plant_description" name="plant_description" >
+      {{ render_errors(form.plant_description) }}
+  <br>
+  <br>
+  <label for="watering_frequency"> Watering Frequency: </label>
+    <br>
+    <input type="text" id="watering_frequency" name="watering_frequency" >
+      {{ render_errors(form.watering_frequency) }}
+  <br>
+  <br>
+  <label for="plant_photo"> Plant Photo: </label>
+  <br>
+    <input type="file" name="plant_photo" id="plant_photo" aria-describedby="fileHelp">
+              <small id="fileHelp" class="form-text text-muted">Select an image for this plant.</small>
+              {{ render_errors(form.plant_photo) }}
+  <br>
+  <button class="btn-sm btn-success" type="submit">Add Plant</button>
+</form>
+</div>
 
 {% endblock %}

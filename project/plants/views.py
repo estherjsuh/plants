@@ -1,9 +1,13 @@
-from flask import render_template, Blueprint, request, redirect, url_for, flash, abort, jsonify
+from flask import Flask, render_template, Blueprint, request, redirect, url_for, flash
 from project.models import Plants
-from .forms import AddPlantForm
-from project import db, images
+from .forms import AddPlantForm, EditPlantForm
+from project import db, app
+from werkzeug.utils import secure_filename
+import os
 ###CONFIG###
 plants_blueprint = Blueprint('plants', __name__, template_folder='templates')
+
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 ##FUNCTION##
 def flash_errors(form):
@@ -13,6 +17,9 @@ def flash_errors(form):
                 getattr(form, field).label.text,
                 error
             ), 'info')
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 ##ROUTES##
@@ -34,8 +41,27 @@ def add_plant():
     form = AddPlantForm()
     if request.method == 'POST':
         if form.validate_on_submit():
-            filename = images.save(request.files['plant_photo'])
-            url = images.url(filename)
+            if 'plant_photo' not in request.files:
+                flash('No plant photo added')
+                return redirect(request.url)
+
+            file = request.files['plant_photo']
+
+            if file.filename=='':
+                flash('No plant photo selected ')
+                return redirect(request.url)
+
+
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                url = os.path.join(app.config['IMAGE_URL'], filename)
+            else:
+                filename = ''
+                url = ''
+
+            # filename = images.save(request.files['plant_photo'])
+            # url = images.url(filename)
             new_plant = Plants(form.plant_name.data, form.plant_description.data, form.watering_frequency.data, filename, url
             )
             db.session.add(new_plant)
@@ -55,15 +81,25 @@ def gallery():
 
 @plants_blueprint.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit(id):
-    data = Plants.query.filter(Plants.plant_id == id)
-    plant = data.first()
-    if plant:
-        form = AddPlantForm(formdata=request.form, obj=plant)
-        if request.method == 'POST' and form.validate():
-            save_changes(plant, form)
-            flash('Plant updated successfully!')
-            return reditect(url_for('plants.all'))
-        return render_template('edit.html', form=form)
-    else:
-        flash_errors(form)
-        flash('Error: Plant could not update')
+    plant = Plants.query.filter_by(plant_id=id).first_or_404()
+    form = EditPlantForm()
+    if request.method=='POST':
+        if form.validate_on_submit():
+            plant.plant_name = form.plant_name.data
+            plant.plant_description = form.plant_description.data
+            plant.watering_frequency = form.watering_frequency.data
+            if form.plant_photo.has_file():
+                file = request.files['plant_photo']
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                url = os.path.join(app.config['IMAGE_URL'], filename)
+                plant.image_filename = filename
+                plant.image_url = url
+            db.session.add(plant)
+            db.session.commit()
+            flash('{} has been updated'.format(plant.plant_name), 'success')
+            return redirect(url_for('plants.all'))
+        else:
+            flash_errors(form)
+            flash('Could not udpate {}'.format(plant.plant_name), 'error')
+    return render_template('edit.html', form=form, plant=plant)

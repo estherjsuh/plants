@@ -3,4 +3,5 @@ venv/
 instance/
 __pycache__/
 misc/
-static/img
+project/static/img/
+*.pyc
