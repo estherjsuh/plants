@@ -1,5 +1,6 @@
 from project import db
 import datetime
+from sqlalchemy.ext.hybrid import hybrid_method
 
 class Plants(db.Model):
 
@@ -29,8 +30,29 @@ class User(db.Model):
     name = db.Column(db.String, nullable=False)
     email = db.Column(db.String, unique=True, nullable=False)
     password_plaintext = db.Column(db.String, nullable=False)
+    authenticated = db.Column(db.Boolean, default=False)
 
     def __init__(self, name, email, password_plaintext):
         self.name = name
         self.email = email
         self.password_plaintext = password_plaintext
+        self.authenticated = False
+
+    @hybrid_method
+    def is_correct_password(self, plaintext_password):
+        return self.password_plaintext == plaintext_password
+
+    @property
+    def is_authenticated(self):
+        return self.authenticated
+
+    @property
+    def is_active(self):
+        return True
+
+    @property
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return str(self.user_id)

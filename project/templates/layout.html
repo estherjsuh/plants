@@ -15,11 +15,19 @@
       <a class="navbar-brand" href="/">Plant App</a>
     </div>
     <ul class="nav navbar-nav">
+      {% if current_user.is_authenticated %}
       <li><a href="/">home</a></li>
       <li><a href="new">new</a></li>
       <li><a href="plants">plants</a></li>
       <li><a href="gallery">gallery</a></li>
-      <li><a href="register">register</a><li>
+      <li><a href="logout">logout</a></li>
+
+      {% else %}
+      <li><a href="gallery">gallery</a></li>
+      <li><a href="register">register</a></li>
+      <li><a href="login">login</a></li>
+
+      {% endif %}
     </ul>
   </div>
 </nav>
