@@ -1,5 +1,6 @@
 from project import db
-from project.models import Plants
+from project.models import Plants, User
+
 
 db.create_all()
 #

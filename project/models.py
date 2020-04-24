@@ -21,3 +21,16 @@ class Plants(db.Model):
         #self.created_at = created_at
         self.image_filename = image_filename
         self.image_url = image_url
+
+class User(db.Model):
+    __tablename__ = 'users'
+
+    user_id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+    email = db.Column(db.String, unique=True, nullable=False)
+    password_plaintext = db.Column(db.String, nullable=False)
+
+    def __init__(self, name, email, password_plaintext):
+        self.name = name
+        self.email = email
+        self.password_plaintext = password_plaintext

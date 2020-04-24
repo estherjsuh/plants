@@ -5,7 +5,7 @@ from project import db, app
 from werkzeug.utils import secure_filename
 import os
 ###CONFIG###
-plants_blueprint = Blueprint('plants', __name__, template_folder='templates')
+plants_blueprint = Blueprint('plants', __name__)
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
@@ -109,7 +109,7 @@ def delete(id):
     if request.method=='POST':
         db.session.delete(plant)
         db.session.commit()
-        flash('{}} Delete'.format(plant.plant_name), 'success')
+        flash('{} Deleted'.format(plant.plant_name), 'success')
         return redirect(url_for('plants.all'))
     else:
         flask('Could not delete {}'.format(plant.plant_name), 'error')
