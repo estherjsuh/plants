@@ -4,6 +4,7 @@ from .forms import AddPlantForm, EditPlantForm
 from project import db, app
 from werkzeug.utils import secure_filename
 import os
+from sqlalchemy import desc
 ###CONFIG###
 plants_blueprint = Blueprint('plants', __name__)
 
@@ -30,7 +31,7 @@ def hello():
 
 @plants_blueprint.route('/plants')
 def all():
-    all_plants = Plants.query.all()
+    all_plants = Plants.query.order_by(Plants.created_at.desc()).all()
     return render_template('plants.html', plants=all_plants)
 
 @plants_blueprint.route('/new', methods=['GET','POST'])
@@ -75,7 +76,8 @@ def add_plant():
 
 @plants_blueprint.route('/gallery')
 def gallery():
-    all_plants = Plants.query.all()
+    all_plants = Plants.query.order_by(Plants.created_at.desc()).all()
+    #all_plants.order_by(desc(Plants.created_at))
     return render_template('gallery.html',plants=all_plants)
 
 @plants_blueprint.route('/edit/<int:id>', methods=['GET', 'POST'])

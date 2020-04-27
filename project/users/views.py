@@ -19,7 +19,7 @@ def register():
                 db.session.add(new_user)
                 db.session.commit()
                 flash('Registration Success!', 'success')
-                return redirect(url_for('plants.all'))
+                return redirect(url_for('users.login'))
             except IntegrityError:
                 db.session.rollback()
                 flash('Email {} already exists'.format(form.email.data), 'error')

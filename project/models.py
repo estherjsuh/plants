@@ -1,6 +1,6 @@
-from project import db
+from project import db, bcrypt
 import datetime
-from sqlalchemy.ext.hybrid import hybrid_method
+from sqlalchemy.ext.hybrid import hybrid_method, hybrid_property
 
 class Plants(db.Model):
 
@@ -29,18 +29,27 @@ class User(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     email = db.Column(db.String, unique=True, nullable=False)
-    password_plaintext = db.Column(db.String, nullable=False)
+    _password_hash = db.Column(db.Binary(60), nullable=False)
     authenticated = db.Column(db.Boolean, default=False)
 
-    def __init__(self, name, email, password_plaintext):
+    def __init__(self, name, email, plaintext_password):
         self.name = name
         self.email = email
-        self.password_plaintext = password_plaintext
+        self.password = plaintext_password
         self.authenticated = False
+
+    @hybrid_property
+    def password(self):
+        return self._password_hash
+
+    #For consistency with Python properties, SQLAlchemy decided to disallow the use of functions called something other than the name of the hybrid proprerty that they affect. So the above now needs to be:
+    @password.setter
+    def password(self, plaintext_password):
+        self._password_hash = bcrypt.generate_password_hash(plaintext_password)
 
     @hybrid_method
     def is_correct_password(self, plaintext_password):
-        return self.password_plaintext == plaintext_password
+        return bcrypt.check_password_hash(self.password, plaintext_password)
 
     @property
     def is_authenticated(self):

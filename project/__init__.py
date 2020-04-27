@@ -1,21 +1,18 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_uploads import UploadSet, configure_uploads
-from os.path import join, isfile
+#from os.path import join, isfile
 from flask_login import LoginManager
+from flask_bcrypt import Bcrypt
 #If we set instance_relative_config=True when we create our app with the Flask() call, app.config.from_pyfile() will load the specified file from the instance/ directory.
 
 ##CONFIG - LOADS CONFIGURATION FROM CONFIG FILE##
 app = Flask(__name__, instance_relative_config=True)
 
-##something here is weird:
-# if isfile(join('instance', 'flask_full.cfg')):
-#     app.config.from_pyfile('flask_full.cfg')
-# else:
-#     app.config.from_pyfile('flask.cfg')
 
 app.config.from_pyfile('flask.cfg')
 db = SQLAlchemy(app) #db instance
+bcrypt = Bcrypt(app)
 
 login_manager=LoginManager()
 login_manager.init_app(app)

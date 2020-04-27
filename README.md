@@ -16,5 +16,7 @@
  - Jinja2 - templating engine
  - SQLAlchemy - ORM
  - Flask-WTF - form
- 
+ - flask-login - logging users
+ - nose2 - unit testing
+
 This application is written using Python 3.7.1. The database used is PostgreSQL.
