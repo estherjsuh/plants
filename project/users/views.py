@@ -37,7 +37,7 @@ def login():
                 db.session.add(user)
                 db.session.commit()
                 login_user(user)
-                flash('Thanks for logging in {}'.format(user.name),'info')
+                flash('Thanks for logging in {}'.format(user.name.title()),'info')
                 return redirect(url_for('plants.all'))
             else:
                 flash('Invalid login credentials', 'error')

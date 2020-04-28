@@ -1,10 +1,10 @@
 from flask import render_template, Blueprint, request, redirect, url_for, flash
-from project.models import Plants
+from flask_login import login_required, current_user
+from project.models import Plants, User
 from .forms import AddPlantForm, EditPlantForm
 from project import db, app
 from werkzeug.utils import secure_filename
 import os
-from sqlalchemy import desc
 ###CONFIG###
 plants_blueprint = Blueprint('plants', __name__)
 
@@ -30,11 +30,13 @@ def hello():
     return render_template('hello.html')
 
 @plants_blueprint.route('/plants')
+@login_required
 def all():
-    all_plants = Plants.query.order_by(Plants.created_at.desc()).all()
+    all_plants = Plants.query.filter_by(user_id=current_user.user_id).order_by(Plants.created_at.desc())
     return render_template('plants.html', plants=all_plants)
 
 @plants_blueprint.route('/new', methods=['GET','POST'])
+@login_required
 def add_plant():
     # Cannot pass in 'request.form' to AddRecipeForm constructor, as this will cause 'request.files' to not be
     # sent to the form.  This will cause AddRecipeForm to not see the file data.
@@ -62,8 +64,7 @@ def add_plant():
 
             # filename = images.save(request.files['plant_photo'])
             # url = images.url(filename)
-            new_plant = Plants(form.plant_name.data, form.plant_description.data, form.watering_frequency.data, filename, url
-            )
+            new_plant = Plants(current_user.user_id, form.plant_name.data, form.plant_description.data, form.watering_frequency.data, filename, url)        
             db.session.add(new_plant)
             db.session.commit()
             flash('Yay! {} joined the crew'.format(new_plant.plant_name.title()), 'success')

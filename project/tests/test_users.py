@@ -2,6 +2,9 @@ import os
 import unittest
 
 from project import app, db
+from project.models import Plants, User
+
+
 
 TEST_DB ='users.db'
 
@@ -27,6 +30,29 @@ class UsersTest(unittest.TestCase):
 
     def login(self, email, password):
         return self.app.post('/login', data=dict(email=email, password=password), follow_redirects=True)
+
+    def register_user(self):
+        self.app.get('/register', follow_redirects=True)
+        self.register('esther', 'estherjsuh@gmail.com', 'HelloGoodbye', 'HelloGoodbye')
+
+    def login_user(self):
+        self.app.get('/login', follow_redirects=True)
+        self.login('estherjsuh@gmail.com', 'HelloGoodbye')
+
+    def logout_user(self):
+        self.app.get('/logout', follow_redirects=True)
+
+    def add_plants(self):
+        self.register_user()
+        self.login_user()
+        user1 = User.query.filter_by(email='estherjsuh@gmail.com').first()
+        plant1 = Plants(user1.user_id, 'aloe', 'good for burns', 9, 'aloe.jpg', '/static/img/aloe.jpg')
+        plant2 = Plants(user1.user_id, 'fiddle', 'cannot stand wind', 7, 'fiddle.jpg', '/static/img/fiddle.jpg')
+        plant3 = Plants(user1.user_id, 'lucky', 'money plant', 7, 'money.jpg', '/static/img/money.jpg')
+        db.session.add(plant1)
+        db.session.add(plant2)
+        db.session.add(plant3)
+        db.session.commit()
 
 ##TESTS##
 
@@ -96,6 +122,29 @@ class UsersTest(unittest.TestCase):
     def test_invalid_logout(self):
         response = self.app.get('/logout', follow_redirects=True)
         self.assertIn(b'Login To Your Account', response.data)
+
+    #TEST 11: check if myplants page shows when users register and login
+    def test_myplants_page(self):
+        self.register_user()
+        self.login_user()
+        response = self.app.get('/plants', follow_redirects=True)
+        self.assertIn(b'Here Are Your Plants', response.data)
+
+    #TEST 12: check that plants are added
+    def test_add_plants_page(self):
+        self.register_user()
+        self.login_user()
+        self.add_plants()
+        response = self.app.get('/plants', follow_redirects=True)
+        self.assertIn(b'Aloe', response.data)
+        self.assertIn(b'Fiddle', response.data)
+        self.assertIn(b'Lucky', response.data)
+
+    #TEST 13:
+    def test_add_plants_page_without_login(self):
+        response = self.app.get('/new', follow_redirects=True)
+        self.assertIn(b'Login To Your Account', response.data)
+
 
 
 if __name__=='__main__':

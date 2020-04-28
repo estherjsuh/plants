@@ -13,15 +13,18 @@ class Plants(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     image_filename = db.Column(db.String, default=None, nullable=True)
     image_url = db.Column(db.String, default=None, nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
 
 
-    def __init__(self, name, description, frequency, image_filename=None, image_url=None):
+    def __init__(self, user_id,name, description, frequency, image_filename=None, image_url=None):
+        self.user_id = user_id
         self.plant_name = name
         self.plant_description = description
         self.watering_frequency = frequency
         #self.created_at = created_at
         self.image_filename = image_filename
         self.image_url = image_url
+        self.user_id = user_id
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -31,6 +34,7 @@ class User(db.Model):
     email = db.Column(db.String, unique=True, nullable=False)
     _password_hash = db.Column(db.Binary(60), nullable=False)
     authenticated = db.Column(db.Boolean, default=False)
+    plants = db.relationship('Plants', backref='user', lazy='dynamic')
 
     def __init__(self, name, email, plaintext_password):
         self.name = name
