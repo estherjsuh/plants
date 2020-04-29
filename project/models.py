@@ -21,7 +21,6 @@ class Plants(db.Model):
         self.plant_name = name
         self.plant_description = description
         self.watering_frequency = frequency
-        #self.created_at = created_at
         self.image_filename = image_filename
         self.image_url = image_url
         self.user_id = user_id

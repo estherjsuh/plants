@@ -8,9 +8,8 @@ from flask_bcrypt import Bcrypt
 
 ##CONFIG - LOADS CONFIGURATION FROM CONFIG FILE##
 app = Flask(__name__, instance_relative_config=True)
-
-
 app.config.from_pyfile('flask.cfg')
+
 db = SQLAlchemy(app) #db instance
 bcrypt = Bcrypt(app)
 
