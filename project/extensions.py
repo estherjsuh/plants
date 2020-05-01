@@ -4,4 +4,4 @@ from flask_bcrypt import Bcrypt
 
 login_manager = LoginManager()
 db = SQLAlchemy()
-bcrypt = Bcrypt(app)
+bcrypt = Bcrypt()
