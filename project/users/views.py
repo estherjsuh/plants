@@ -2,7 +2,7 @@ from flask import render_template, Blueprint, request, redirect, url_for, flash
 from flask_login import login_user, current_user, login_required, logout_user
 from project.models import User
 from .forms import RegisterForm, LoginForm
-from project import db, app
+from project.extensions import db
 from sqlalchemy.exc import IntegrityError
 
 ###CONFIG###

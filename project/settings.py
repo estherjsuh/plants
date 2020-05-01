@@ -7,3 +7,4 @@ TOP_LEVEL_DIR = os.path.abspath(os.curdir)
 UPLOAD_FOLDER = TOP_LEVEL_DIR + 'project/static/img/'
 IMAGE_URL = '/static/img'
 WTF_CSRF_ENABLED = True
+#MAX_CONTENT_LENGTH = 16 * 1024 * 1024

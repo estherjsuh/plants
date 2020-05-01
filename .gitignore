@@ -5,3 +5,4 @@ __pycache__/
 misc/
 project/static/img/
 *.pyc
+.variables

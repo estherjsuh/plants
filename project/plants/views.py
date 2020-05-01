@@ -2,9 +2,12 @@ from flask import render_template, Blueprint, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 from project.models import Plants, User
 from .forms import AddPlantForm, EditPlantForm
-from project import db, app
+from project.extensions import db, s3
 from werkzeug.utils import secure_filename
 import os
+import boto3
+from botocore.exceptions import ClientError
+
 ###CONFIG###
 plants_blueprint = Blueprint('plants', __name__)
 
@@ -21,6 +24,21 @@ def flash_errors(form):
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+#saving image to s3
+def upload_image_to_s3(file, object_name=None):
+    # See https://boto3.amazonaws.com/v1/documentation/api/latest/guide/s3-uploading-files.html
+    # If S3 object_name was not specified, use file_name
+    if object_name is None:
+        object_name = 'none.jpg'
+    # Upload the file
+    s3_client = boto3.client('s3')
+    try:
+        response = s3_client.upload_fileobj(file, 'plants-bucket', object_name, ExtraArgs={"ContentType": "image/jpeg"})
+    except ClientError as e:
+        logging.error(e)
+        return False
+    return True
 
 
 ##ROUTES##
@@ -42,6 +60,7 @@ def add_plant():
     # sent to the form.  This will cause AddRecipeForm to not see the file data.
     # Flask-WTF handles passing form data to the form, so not parameters need to be included.
     form = AddPlantForm()
+
     if request.method == 'POST':
         if form.validate_on_submit():
             if 'plant_photo' not in request.files:
@@ -53,18 +72,23 @@ def add_plant():
             if file.filename=='':
                 flash('No plant photo selected ')
                 return redirect(request.url)
-
+            # Esther to add bounds checking for file size (5MB)
+            # Use MAX_CONTENT_LENGTH
             if file and allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                url = os.path.join(app.config['IMAGE_URL'], filename)
+                # filename = secure_filename(file.filename)
+                # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+                upload_image_to_s3(file, file.filename)
+
             else:
                 filename = ''
                 url = ''
 
-            # filename = images.save(request.files['plant_photo'])
+            filename = file.filename
             # url = images.url(filename)
-            new_plant = Plants(current_user.user_id, form.plant_name.data, form.plant_description.data, form.watering_frequency.data, filename, url)        
+            BUCKET_PREFIX = 'https://plants-bucket.s3-us-west-1.amazonaws.com/'
+            url = BUCKET_PREFIX+filename
+            new_plant = Plants(current_user.user_id, form.plant_name.data, form.plant_description.data, form.watering_frequency.data, file.filename, url)
             db.session.add(new_plant)
             db.session.commit()
             flash('Yay! {} joined the crew'.format(new_plant.plant_name.title()), 'success')
