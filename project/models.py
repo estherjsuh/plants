@@ -1,4 +1,4 @@
-from project import db, bcrypt
+from .extensions import db, bcrypt
 import datetime
 from sqlalchemy.ext.hybrid import hybrid_method, hybrid_property
 
