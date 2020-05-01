@@ -8,3 +8,4 @@ from .models import Plants, User
 @with_appcontext
 def create_tables():
     db.create_all()
+    db.session.commit()
