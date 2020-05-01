@@ -8,7 +8,7 @@ S3_KEY= os.environ.get("AWS_ACCESS_KEY_ID")
 S3_SECRET = os.environ.get("AWS_SECRET_ACCESS_KEY")
 S3_BUCKET = os.environ.get("AWS_BUCKET_NAME")
 #AWS_S3_FILE_OVERWRITE = False
-
+BUCKET_PREFIX = os.environ.get('BUCKET_PREFIX')
 
 login_manager = LoginManager()
 db = SQLAlchemy()

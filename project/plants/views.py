@@ -2,11 +2,12 @@ from flask import render_template, Blueprint, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 from project.models import Plants, User
 from .forms import AddPlantForm, EditPlantForm
-from project.extensions import db, s3
+from project.extensions import db, s3, BUCKET_PREFIX
 from werkzeug.utils import secure_filename
 import os
 import boto3
 from botocore.exceptions import ClientError
+
 
 ###CONFIG###
 plants_blueprint = Blueprint('plants', __name__)
@@ -86,7 +87,7 @@ def add_plant():
 
             filename = file.filename
             # url = images.url(filename)
-            BUCKET_PREFIX = 'https://plants-bucket.s3-us-west-1.amazonaws.com/'
+
             url = BUCKET_PREFIX+filename
             new_plant = Plants(current_user.user_id, form.plant_name.data, form.plant_description.data, form.watering_frequency.data, file.filename, url)
             db.session.add(new_plant)
@@ -117,8 +118,12 @@ def edit(id):
             if form.plant_photo.has_file():
                 file = request.files['plant_photo']
                 filename = secure_filename(file.filename)
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                url = os.path.join(app.config['IMAGE_URL'], filename)
+                #BUCKET_PREFIX = 'https://plants-bucket.s3-us-west-1.amazonaws.com/'
+                url = BUCKET_PREFIX+filename
+                upload_image_to_s3(file, file.filename)
+
+                # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                # url = os.path.join(app.config['IMAGE_URL'], filename)
                 plant.image_filename = filename
                 plant.image_url = url
             db.session.add(plant)
