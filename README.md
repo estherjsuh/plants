@@ -1,17 +1,43 @@
 ![alt text](https://github.com/estherjsuh/plants/blob/master/static/technologies.png)
 
 
-
 # Plant App
 
-## Author: Esther Suh
+## Created By: Esther Suh
 
+## Description
+Inspired by the joy of raising houseplants
 
+## Install & Run App:
+1. fork this repo
+```
+git fork git@github.com:estherjsuh/plants.git
+```
 
-## To start app:
-1. connect and create db by running:
-    python db_create.py
-2. python run.py
+2. cd into plants
+```
+cd plants
+```
+3. create virual environment and install dependencies
+```
+virtualenv venv --python=python3.7
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+4. run python
+```
+python
+import project
+app =  project.create_app()
+app.run()
+```
+
+##Running Tests
+From the root directory, run:
+```
+nose2
+```
 
 
 ## How It's Made
