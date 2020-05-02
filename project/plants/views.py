@@ -14,7 +14,7 @@ plants_blueprint = Blueprint('plants', __name__)
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 
-##FUNCTION##
+##FUNCTIONS##
 def flash_errors(form):
     for field, errors in form.errors.items():
         for error in errors:
