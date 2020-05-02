@@ -1,3 +1,7 @@
+![alt text](https://github.com/estherjsuh/plants/static/howitsmade.png)
+
+
+
 # Plant App
 
 ## Author: Esther Suh
