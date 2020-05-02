@@ -1,4 +1,4 @@
-![alt text](https://github.com/estherjsuh/plants/static/technologies.png)
+![alt text](https://github.com/estherjsuh/plants/blob/master/static/technologies.png)
 
 
 
