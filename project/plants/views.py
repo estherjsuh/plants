@@ -11,8 +11,8 @@ from botocore.exceptions import ClientError
 
 ###CONFIG###
 plants_blueprint = Blueprint('plants', __name__)
-
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+
 
 ##FUNCTION##
 def flash_errors(form):
@@ -73,8 +73,7 @@ def add_plant():
             if file.filename=='':
                 flash('No plant photo selected ')
                 return redirect(request.url)
-            # Esther to add bounds checking for file size (5MB)
-            # Use MAX_CONTENT_LENGTH
+
             if file and allowed_file(file.filename):
                 # filename = secure_filename(file.filename)
                 # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
@@ -103,7 +102,6 @@ def add_plant():
 @plants_blueprint.route('/gallery')
 def gallery():
     all_plants = Plants.query.order_by(Plants.created_at.desc()).all()
-    #all_plants.order_by(desc(Plants.created_at))
     return render_template('gallery.html',plants=all_plants)
 
 @plants_blueprint.route('/edit/<int:id>', methods=['GET', 'POST'])
@@ -118,7 +116,6 @@ def edit(id):
             if form.plant_photo.has_file():
                 file = request.files['plant_photo']
                 filename = secure_filename(file.filename)
-                #BUCKET_PREFIX = 'https://plants-bucket.s3-us-west-1.amazonaws.com/'
                 url = BUCKET_PREFIX+filename
                 upload_image_to_s3(file, file.filename)
 
