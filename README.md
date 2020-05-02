@@ -1,4 +1,4 @@
-![alt text](https://github.com/estherjsuh/plants/static/howitsmade.png)
+![alt text](https://github.com/estherjsuh/plants/static/technologies.png)
 
 
 
