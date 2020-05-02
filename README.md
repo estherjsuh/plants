@@ -8,6 +8,23 @@
 ## Description
 Inspired by the joy of raising houseplants
 
+## How It's Made
+### Key Python Modules
+ - Flask - web Framework
+ - SQLAlchemy - ORM
+ - Flask-WTF - form
+ - Jinja2 - templating engine
+ - flask-login - logging users
+ - flask-bcrypt - password hashing
+ - nose2 - unit testing
+
+This application is written using Python 3.7.1. The database used is PostgreSQL.
+### Deployment
+ - App deployed on Heroku
+ - Uploaded images stores within Amazon S3
+Deployed application can be found here: https://plants-app-api.herokuapp.com/
+
+
 ## Install & Run App:
 1. fork this repo
 ```
@@ -33,20 +50,8 @@ app =  project.create_app()
 app.run()
 ```
 
-##Running Tests
+## Running Tests
 From the root directory, run:
 ```
 nose2
 ```
-
-
-## How It's Made
-### Key Python Modules
- - Flask - web Framework
- - Jinja2 - templating engine
- - SQLAlchemy - ORM
- - Flask-WTF - form
- - flask-login - logging users
- - nose2 - unit testing
-
-This application is written using Python 3.7.1. The database used is PostgreSQL.
