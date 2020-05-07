@@ -1,24 +1,29 @@
 import os
 import unittest
 
-from project import app, db
+#from project import app, db
+from project import create_app
 from project.models import Plants, User
-
-
+from project.extensions import db
+app = create_app()
+app.app_context().push()
 
 TEST_DB ='users.db'
-
+BASEDIR = os.path.abspath(os.path.dirname(__file__))
 
 class UsersTest(unittest.TestCase):
 
     def setUp(self):
-        app.config['TESTING'] = True
-        app.config['WTF_CSRF_ENABLED'] = False
-        app.config['DEBUG'] = False
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(app.config['BASEDIR'], TEST_DB)
-        self.app = app.test_client()
-        db.drop_all()
-        db.create_all()
+        with app.app_context():
+            app.config['TESTING'] = True
+            app.config['WTF_CSRF_ENABLED'] = False
+            app.config['DEBUG'] = False
+            app.config['SECRET_KEY'] = 'testing'
+            #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(app.config['BASEDIR'], TEST_DB)
+            app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASEDIR, TEST_DB)
+            self.app = app.test_client()
+            db.drop_all()
+            db.create_all()
 
         self.assertEquals(app.debug, False)
 
