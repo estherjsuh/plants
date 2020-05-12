@@ -6,3 +6,4 @@ misc/
 project/static/img/
 *.pyc
 .variables
+*.users.db
