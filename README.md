@@ -1,4 +1,4 @@
-[![CircleCI](https://app.circleci.com/pipelines/github/estherjsuh/plants?style=svg)](https://app.circleci.com/pipelines/github/estherjsuh/plants)
+[![CircleCI](https://circleci.com/github/estherjsuh/plants?style=svg)](https://app.circleci.com/github/estherjsuh/plants)
 
 
 ![alt text](https://github.com/estherjsuh/plants/blob/master/static/technologies.png)
