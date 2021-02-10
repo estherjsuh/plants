@@ -1,5 +1,5 @@
 '''
-2 Forms to handle plant data
+Forms to handle plant data
 '''
 
 from flask_wtf import FlaskForm

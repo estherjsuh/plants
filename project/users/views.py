@@ -1,15 +1,19 @@
+'''
+Routes for User Registration, User Login, and User Sign-Out
+'''
 from flask import render_template, Blueprint, request, redirect, url_for, flash
 from flask_login import login_user, current_user, login_required, logout_user
 from project.models import User
-from .forms import RegisterForm, LoginForm
 from project.extensions import db
 from sqlalchemy.exc import IntegrityError
+from .forms import RegisterForm, LoginForm
 
 ###CONFIG###
 users_blueprint = Blueprint('users', __name__)
 
 @users_blueprint.route('/register', methods= ['GET', 'POST'])
 def register():
+    '''User Registraion page'''
     form = RegisterForm(request.form)
     if request.method == 'POST':
         if form.validate_on_submit():
@@ -28,6 +32,7 @@ def register():
 
 @users_blueprint.route('/login', methods=['GET', 'POST'])
 def login():
+    '''User Login page'''
     form = LoginForm(request.form)
     if request.method == 'POST':
         if form.validate_on_submit():
@@ -39,14 +44,14 @@ def login():
                 login_user(user)
                 flash('Thanks for logging in {}'.format(user.name.title()),'info')
                 return redirect(url_for('plants.all'))
-            else:
-                flash('Invalid login credentials', 'error')
+            flash('Invalid login credentials', 'error')
     return render_template('login.html', form=form)
 
 
 @users_blueprint.route('/logout')
 @login_required
 def logout():
+    '''User Logout'''
     user = current_user
     user.authenticated=False
     db.session.add(user)
