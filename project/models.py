@@ -1,9 +1,12 @@
-from .extensions import db, bcrypt
-import datetime
+'''
+Table Schemas for Plants & Users
+'''
 from sqlalchemy.ext.hybrid import hybrid_method, hybrid_property
+import datetime
+from .extensions import db, bcrypt
 
 class Plants(db.Model):
-
+    '''Plant Table'''
     __tablename__ = 'plants'
 
     plant_id = db.Column(db.Integer, primary_key=True)
@@ -16,16 +19,16 @@ class Plants(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
 
 
-    def __init__(self, user_id,name, description, frequency, image_filename=None, image_url=None):
+    def __init__(self, user_id, name, description, frequency, image_filename=None, image_url=None):
         self.user_id = user_id
         self.plant_name = name
         self.plant_description = description
         self.watering_frequency = frequency
         self.image_filename = image_filename
         self.image_url = image_url
-        self.user_id = user_id
 
 class User(db.Model):
+    '''User Table'''
     __tablename__ = 'users'
 
     user_id = db.Column(db.Integer, primary_key=True)
@@ -43,28 +46,37 @@ class User(db.Model):
 
     @hybrid_property
     def password(self):
+        '''updates password to hashed password'''
         return self._password_hash
 
-    #For consistency with Python properties, SQLAlchemy decided to disallow the use of functions called something other than the name of the hybrid proprerty that they affect. So the above now needs to be:
+    #For consistency with Python properties, SQLAlchemy decided to disallow
+    #the use of functions called something other than the name of the hybrid
+    #proprerty that they affect. So the above now needs to be:
     @password.setter
     def password(self, plaintext_password):
+        '''hashes user password'''
         self._password_hash = bcrypt.generate_password_hash(plaintext_password)
 
     @hybrid_method
     def is_correct_password(self, plaintext_password):
+        '''checks if password user input matches password in database'''
         return bcrypt.check_password_hash(self.password, plaintext_password)
 
     @property
     def is_authenticated(self):
+        '''returns True when user input password matches database password'''
         return self.authenticated
 
     @property
     def is_active(self):
+        '''returns true when user is logged in'''
         return True
 
     @property
     def is_anonymous(self):
+        '''returns false when user is logged in'''
         return False
 
     def get_id(self):
+        '''gets user_id of logged in user'''
         return str(self.user_id)
